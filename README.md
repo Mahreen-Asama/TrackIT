@@ -11,6 +11,4 @@ https://github.com/user-attachments/assets/cc936424-db86-4fd0-bc20-dc981b31ea08
 
 ![dashboard](https://github.com/user-attachments/assets/92543ab8-5aeb-427e-a68b-8a4dc301254b)
 
-![menu](https://github.com/user-attachments/assets/17153b96-7576-413d-b1b3-e8a9675a6d88)
-
 ![flows](https://github.com/user-attachments/assets/d573a113-69de-491f-aa55-116ef0a46e75)
