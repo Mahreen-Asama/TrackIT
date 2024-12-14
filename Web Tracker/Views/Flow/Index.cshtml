@@ -1,0 +1,381 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+    .snakeyDiagram {
+        display:block;
+        margin:auto;
+        width: 600px;
+        height: 400px;
+        border: 1px solid #6495ED;
+        background-color: white;
+    }
+</style>
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-top: 0px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Website Flows</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="index">Home</a></li>
+              <li class="breadcrumb-item active"><a href="#">Website Flows</a></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+                </div>
+            </div>
+        </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+                    @*<div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Flow Summary Table</h3>
+
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Count</th>
+                                                <th>Flow</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="SumaryTable">
+                                            @for (int i = 0; i < ViewBag.Summary.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@ViewBag.Summary[i].Count</td>
+                                                    <td>@ViewBag.Summary[i].FlowSummed</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>*@
+                @*<div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Action Summary Table</h3>
+
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Action</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ActionSumaryTable">
+                                        @for (int i = 0; i < ViewBag.ActionSummary.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>@(i + 1)</td>
+                                                <td>@ViewBag.ActionSummary[i].ActionSummed</td>
+                                                <td>@ViewBag.ActionSummary[i].Count</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                    <!-- /.row -->
+        <!-- /.row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Brief Flow Table</h3>
+
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Flow ID</th>
+                                                <th>Flow</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < ViewBag.Flows.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@ViewBag.FlowIDs[i]</td>
+                                                    <td>@ViewBag.Flows[i]</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Actions Flow Table</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0" style="height: 300px;">
+                                    <table class="table table-head-fixed text-nowrap" id="actionflow">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Flow ID</th>
+                                                @for (int i = 0; i < ViewBag.pages.Count; i++)
+                                                {
+                                                    @if(ViewBag.pages[i]=="/")
+                                                    {
+                                                       <th>Landing Page</th>
+                                                    }
+                                                    else
+                                                    {
+                                                        <th>@ViewBag.pages[i]</th>
+                                                    }
+                                                    
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < ViewBag.Actions.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@(i + 1)</td>
+                                                    <td>@ViewBag.FlowIDs[i]</td>
+                                                   @for(int j=0; j<ViewBag.pages.Count; j++)
+                                                   {
+                                                        @if (j < ViewBag.Actions[i].Count)
+                                                        {
+                                                        <td>@ViewBag.Actions[i][j]</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>*@
+      </div><!-- /.container-fluid -->
+            <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
+            <script src="~/js/AutoUpdater.js"></script>
+        </section>
+        <section class="content" id="ActionSumChart">
+            <script>
+                var _d = @Html.Raw(Json.Serialize(ViewBag.SumAction));
+                var _d_ = @Html.Raw(Json.Serialize(ViewBag.uniqact));
+                var nodes = [];
+                var edges = [];
+                var container;
+                var data;
+                var options;
+                var network;
+            </script>
+
+            <br /><br />
+            <h4 style="text-align:center; font-weight:bold;">Actions Flow</h4><br />
+            @for(int i=0; i<ViewBag.pages.Count; i++)
+            {
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-12">
+                    @if (ViewBag.pages[i]=="/")
+                    {
+                        <h5 style="display:block; text-align:center;">Landing Page</h5>
+                    }
+                    else
+                    {
+                        <h5 style="display:block; text-align:center;">@ViewBag.pages[i]</h5>
+                    }
+                    </div>
+                   <div class="col-12">
+                    <div id="@ViewBag.pages[i]" class="snakeyDiagram"></div>
+                   </div>
+                    
+                    <script>
+                        nodes = [];
+                        console.log(_d_);
+                        for (var j = 0; j < _d_.length; j++)
+                        {
+                            if (_d_[j].page == @Html.Raw(Json.Serialize(ViewBag.pages[i])))
+                            {
+                                nodes.push({ id: _d_[j].type + "(" + _d_[j].content + ")", label: _d_[j].type + "(" + _d_[j].content + ")", size:25 })
+                            }
+                        }
+                        console.log(nodes);
+
+                        edges = [];
+                        for (var j = 0; j < _d.length; j++) {
+                            if (_d[j].page == @Html.Raw(Json.Serialize(ViewBag.pages[i]))) {
+                                edges.push({ from: _d[j].fromType + "(" + _d[j].fromContent + ")", to: _d[j].toType + "(" + _d[j].toContent + ")", label: _d[j].count+'', arrows:'to'})
+                            }
+                        }
+                        console.log(edges);
+                        container = document.getElementById(@Html.Raw(Json.Serialize(ViewBag.pages[i])));
+                        data = {
+                            nodes: new vis.DataSet(nodes),
+                            edges: new vis.DataSet(edges),
+                        };
+                        options = {};
+                        network = new vis.Network(container, data, options);
+                    </script>
+
+                </div>
+            }
+        </section>
+    <!-- /.content -->
+  </div>
+</div>
+<script>
+    var d=@Html.Raw(Json.Serialize(ViewBag.PFlow));
+    var ds = @Html.Raw(Json.Serialize(ViewBag.SumFlow));
+    var l=[];
+    var s=[];
+    var t=[];
+    var c=[];
+    d.forEach(element => {
+        l.push(element.page);
+    });
+    console.log(l);
+    ds.forEach(element => {
+        console.log(element);
+        s.push(l.indexOf(element.from));
+        t.push(l.indexOf(element.to));
+        c.push(element.count);
+    });
+    console.log(s);
+    console.log(t);
+    console.log(c);
+    data = {
+        type: "sankey",
+        orientation: "h",
+        node: {
+            pad: 15,
+            thickness: 30,
+            line: {
+                color: "black",
+                width: 1
+            },
+            label: l,
+
+        },
+
+        link: {
+            source: s,
+            target: t,
+            value: c
+        }
+    }
+
+    data = [data]
+
+    var layout = {
+        title: "Pages Flow",
+        font: {
+            size: 14
+        }
+    }
+
+    Plotly.react('myDiv', data, layout)
+    connection.on("FlowData", (Pdata,  Sumdata) => {
+        console.log(Pdata);
+        console.log(Sumdata);
+        d = Pdata;
+        ds = Sumdata;
+        l = [];
+        s = [];
+        t = [];
+        c = [];
+        d.forEach(element => {
+            l.push(element.page);
+        });
+        console.log(l);
+        ds.forEach(element => {
+            console.log(element);
+            s.push(l.indexOf(element.from));
+            t.push(l.indexOf(element.to));
+            c.push(element.count);
+        });
+        console.log(s);
+        console.log(t);
+        console.log(c);
+        data = {
+            type: "sankey",
+            orientation: "h",
+            node: {
+                pad: 15,
+                thickness: 30,
+                line: {
+                    color: "black",
+                    width: 1
+                },
+                label: l,
+
+            },
+
+            link: {
+                source: s,
+                target: t,
+                value: c
+            }
+        }
+
+        data = [data]
+
+        layout = {
+            title: "Pages Flow",
+            font: {
+                size: 14
+            }
+        }
+
+        Plotly.react('myDiv', data, layout)
+    });
+    
+</script>

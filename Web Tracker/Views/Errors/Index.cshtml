@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="wrapper">
+    <div class="content-wrapper" style="margin-top: 0px;">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Clients List</h1>
+                    </div>
+                    @*<div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Clients List</li>
+                        </ol>
+                    </div>*@
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Clients List Table</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0" style="">
+                                <table class="table table-head-fixed text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Website</th>
+                                            <th>VisitCount</th>
+                                            <th>Errors</th>
+                                            <th>Warnings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="WebsiteTable">
+                                        @for (int i = 0; i < ViewBag.WebsitesList.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                <td>@ViewBag.WebsitesList[i].Web</td>
+                                                <td>@ViewBag.WebsitesList[i].VisitCount</td>
+                                                <td><a class="btn btn-danger" asp-controller="Errors" asp-action="ClientErrors" asp-route-websiteName="@ViewBag.WebsitesList[i].Web">Errors</a></td>
+                                                <td><a class="btn btn-warning" asp-controller="Errors" asp-action="ClientWarnings" asp-route-websiteName="@ViewBag.WebsitesList[i].Web">Warnings</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                </div>
+                </section>
+
+                </div>
+                </div>
